@@ -7,10 +7,10 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const PORT = process.env.PORT || 3456;
+const PORT = process.env.PCMC_PORT || 3456;
 const HOST = 'api.commandcode.ai';
 const PATH = '/alpha/generate';
-const CC_VERSION = process.env.CC_VERSION || '0.39.1';
+const CC_VERSION = process.env.PCMC_VERSION || '0.39.1';
 
 const logFile = fs.createWriteStream(path.join(__dirname, 'proxy.log'), { flags: 'a' });
 function log(...a) { const l = `[${new Date().toISOString()}] ${a.join(' ')}`; process.stdout.write(l + '\n'); logFile.write(l + '\n'); }

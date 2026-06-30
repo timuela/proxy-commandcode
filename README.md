@@ -29,7 +29,7 @@ Editor → POST /v1/chat/completions (OpenAI format)
 ## Quick start
 
 ```bash
-git clone https://github.com/username/proxy-commandcode.git
+git clone https://github.com/nasrulhadi/proxy-commandcode.git
 cd proxy-commandcode
 node server.js
 # → listening on http://localhost:3456
@@ -47,8 +47,8 @@ Zero dependencies. Node.js 18+ only.
 
 | Variable | Default |
 |---|---|
-| `PORT` | `3456` |
-| `CC_VERSION` | `0.39.1` |
+| `PCMC_PORT` | `3456` |
+| `PCMC_VERSION` | `0.39.1` |
 
 ## Integration
 
@@ -106,27 +106,27 @@ Any editor with custom OpenAI endpoint support works the same way: point base UR
 
 Open-weight models accessible on any plan:
 
-| Model | Context | Max Output | Reasoning |
-|---|---|---|---|
-| `deepseek/deepseek-v4-pro` | 1M | 131K | ✓ |
-| `deepseek/deepseek-v4-flash` | 1M | 131K | ✓ |
-| `moonshotai/Kimi-K2.5` | 256K | 32K | — |
-| `moonshotai/Kimi-K2.6` | 256K | 32K | — |
-| `moonshotai/Kimi-K2.7` | 256K | 32K | — |
-| `Qwen/Qwen3.7-Max` | 256K | 32K | ✓ |
-| `Qwen/Qwen3.7-Plus` | 256K | 32K | ✓ |
-| `Qwen/Qwen3.6-Max-Preview` | 256K | 32K | ✓ |
-| `GLM/GLM-5.2` | 256K | 32K | — |
-| `GLM/GLM-5.1` | 256K | 32K | — |
-| `GLM/GLM-5` | 256K | 32K | — |
-| `MiniMax/MiniMax-M3` | 256K | 32K | — |
-| `MiniMax/MiniMax-M2.7` | 256K | 32K | — |
-| `MiniMax/MiniMax-M2.5` | 256K | 32K | — |
-| `MiMo/MiMo-V2.5-Pro` | 256K | 32K | — |
-| `MiMo/MiMo-V2.5` | 256K | 32K | — |
-| `stepfun/Step-3.7` | 256K | 32K | — |
-| `stepfun/Step-3.5-Flash` | 256K | 32K | — |
-| `nvidia/Nemotron-3-Ultra` | 256K | 32K | — |
+| Model |
+|---|
+| `deepseek/deepseek-v4-pro` |
+| `deepseek/deepseek-v4-flash` |
+| `moonshotai/Kimi-K2.5` |
+| `moonshotai/Kimi-K2.6` |
+| `moonshotai/Kimi-K2.7` |
+| `Qwen/Qwen3.7-Max` |
+| `Qwen/Qwen3.7-Plus` |
+| `Qwen/Qwen3.6-Max-Preview` |
+| `GLM/GLM-5.2` |
+| `GLM/GLM-5.1` |
+| `GLM/GLM-5` |
+| `MiniMax/MiniMax-M3` |
+| `MiniMax/MiniMax-M2.7` |
+| `MiniMax/MiniMax-M2.5` |
+| `MiMo/MiMo-V2.5-Pro` |
+| `MiMo/MiMo-V2.5` |
+| `stepfun/Step-3.7` |
+| `stepfun/Step-3.5-Flash` |
+| `nvidia/Nemotron-3-Ultra` |
 
 > Model list may change. Check `GET /provider/v1/models` for current roster.
 
