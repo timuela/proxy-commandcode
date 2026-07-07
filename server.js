@@ -74,7 +74,7 @@ function transform(oaiBody) {
   return JSON.stringify({
     config: { ...STATIC_CONFIG, date: new Date().toISOString().slice(0, 10) },
     memory: '', taste: null, skills: null, permissionMode: 'standard',
-    params: { model, system: systemText || undefined, messages, tools: tools.length > 0 ? tools : undefined, max_tokens: oaiBody.max_tokens || 32000, stream: oaiBody.stream !== false },
+      params: { model, system: systemText || undefined, messages, tools: tools.length > 0 ? tools : undefined, max_tokens: oaiBody.max_tokens || 32000, stream: oaiBody.stream !== false, ...(oaiBody.reasoning_effort ? { reasoning_effort: oaiBody.reasoning_effort } : {}) },
   });
 }
 
