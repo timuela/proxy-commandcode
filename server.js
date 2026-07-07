@@ -115,16 +115,15 @@ function handleUpstreamResponse(proxyRes, res, model, isStream) {
       if (buf.trim()) {
         try { const evt = JSON.parse(buf.trim()); if (evt.type === 'text-delta') fullText += evt.text || ''; else if (evt.type === 'reasoning-delta') fullReasoning += evt.text || ''; } catch {}
       }
-      const text = fullText || fullReasoning;
-      const msg = { role: 'assistant', content: text || null };
-      if (toolCalls.length > 0) { msg.tool_calls = toolCalls; msg.content = text || null; }
+      const msg = { role: 'assistant', content: fullText || null, reasoning_content: fullReasoning || null };
+      if (toolCalls.length > 0) { msg.tool_calls = toolCalls; }
       res.writeHead(200, { ...CORS, 'Content-Type': 'application/json' });
       res.end(JSON.stringify({
         id: genId, object: 'chat.completion', created: Math.floor(Date.now() / 1000), model,
         choices: [{ index: 0, message: msg, finish_reason: toolCalls.length > 0 ? 'tool_calls' : 'stop' }],
         usage: { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 },
       }));
-      log(`[done] text=${text.length} tools=${toolCalls.length}`);
+      log(`[done] text=${fullText.length} reasoning=${fullReasoning.length} tools=${toolCalls.length}`);
     });
 
   } else {
@@ -146,7 +145,7 @@ function handleUpstreamResponse(proxyRes, res, model, isStream) {
         switch (evt.type) {
           case 'text-start': toolCalls = []; toolIdx = 0; roleSent = true; write({ ...base(), choices: [{ index: 0, delta: { role: 'assistant', content: '' }, finish_reason: null }] }); break;
           case 'text-delta': if (evt.text) { tChars += evt.text.length; write({ ...base(), choices: [{ index: 0, delta: { content: evt.text }, finish_reason: null }] }); } break;
-          case 'reasoning-delta': if (evt.text) { rChars += evt.text.length; ensureRole(); write({ ...base(), choices: [{ index: 0, delta: { content: evt.text }, finish_reason: null }] }); } break;
+          case 'reasoning-delta': if (evt.text) { rChars += evt.text.length; ensureRole(); write({ ...base(), choices: [{ index: 0, delta: { reasoning_content: evt.text }, finish_reason: null }] }); } break;
           case 'tool-input-start':
             ensureRole(); toolIdx = toolCalls.length; toolCalls.push({ id: evt.id, name: evt.toolName });
             write({ ...base(), choices: [{ index: 0, delta: { tool_calls: [{ index: toolIdx, id: evt.id, type: 'function', function: { name: evt.toolName, arguments: '' } }] }, finish_reason: null }] });
