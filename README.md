@@ -28,6 +28,8 @@ Editor → POST /v1/chat/completions (OpenAI format)
 
 ## Quick start
 
+### Node.js
+
 ```bash
 git clone https://github.com/nasrulhadi/proxy-commandcode.git
 cd proxy-commandcode
@@ -36,6 +38,31 @@ node server.js
 ```
 
 Zero dependencies. Node.js 18+ only.
+
+### Docker
+
+```bash
+docker build -t proxy-commandcode .
+docker run -d -p 3456:3456 --name pcc proxy-commandcode
+```
+
+With env overrides:
+
+```bash
+docker run -d -p 3456:3456 -e PCMC_PORT=3456 -e PCMC_VERSION=0.39.1 --name pcc proxy-commandcode
+```
+
+View logs:
+
+```bash
+docker logs -f pcc
+```
+
+Stop / remove:
+
+```bash
+docker stop pcc && docker rm pcc
+```
 
 ### Get your token
 
@@ -71,6 +98,45 @@ Set custom OpenAI endpoint in settings:
 - **Base URL**: `http://localhost:3456/v1`
 - **API Key**: your `user_...` token
 - **Model**: `deepseek/deepseek-v4-pro`
+
+### OpenCode
+
+Edit `~/.config/opencode/opencode.json` (or `opencode.jsonc`):
+
+```json
+{
+  "provider": {
+    "commandcode": {
+      "options": {
+        "apiKey": "user_xxxxxxxxxx",
+        "baseURL": "http://localhost:3456/v1"
+      },
+      "models": {
+        "deepseek/deepseek-v4-pro": {
+          "variants": {
+            "off": {}
+          }
+        },
+        "moonshotai/Kimi-K2.5": {}
+      }
+    }
+  }
+}
+```
+
+Each OpenCode model can declare variants controlling reasoning effort:
+
+```json
+"deepseek/deepseek-v4-pro": {
+  "variants": {
+    "max": { "reasoning_effort": "max" },
+    "high": { "reasoning_effort": "high" },
+    "off": {}
+  }
+}
+```
+
+Select reasoning effort via the ``"variant_cycle": "ctrl+t",`` when using OpenCode or pass `--model commandcode/deepseek/deepseek-v4-pro:high` at startup.
 
 ### Cursor
 

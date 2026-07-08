@@ -200,15 +200,19 @@ function handleRequest(req, res) {
   });
 }
 
-// ── start: kill existing process on PORT ──────────────────────────────────────
+// ── start: kill existing process on PORT (cross-platform) ──────────────────────
 
 try {
-  const netstat = execSync(`netstat -ano | findstr :${PORT} | findstr LISTENING`, { encoding: 'utf8', timeout: 5000 });
-  const match = netstat.trim().match(/(\d+)\s*$/m);
-  if (match) {
-    const pid = match[1];
-    log(`killing existing process on port ${PORT} (PID ${pid})`);
-    execSync(`taskkill /F /PID ${pid}`, { timeout: 5000 });
+  if (process.platform === 'win32') {
+    const netstat = execSync(`netstat -ano | findstr :${PORT} | findstr LISTENING`, { encoding: 'utf8', timeout: 5000 });
+    const match = netstat.trim().match(/(\d+)\s*$/m);
+    if (match) {
+      const pid = match[1];
+      log(`killing existing process on port ${PORT} (PID ${pid})`);
+      execSync(`taskkill /F /PID ${pid}`, { timeout: 5000 });
+    }
+  } else {
+    execSync(`fuser -k ${PORT}/tcp 2>/dev/null || true`, { timeout: 5000 });
   }
 } catch {} // no process = nothing to kill
 
