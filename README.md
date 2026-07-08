@@ -64,6 +64,28 @@ Stop / remove:
 docker stop pcc && docker rm pcc
 ```
 
+### Docker Compose
+
+```yaml
+# docker-compose.yml
+services:
+  proxy-commandcode:
+    build: .
+    container_name: pcc
+    ports:
+      - "3456:3456"
+    environment:
+      - PCMC_PORT=3456
+      - PCMC_VERSION=0.39.1
+    restart: unless-stopped
+```
+
+```bash
+docker compose up -d
+docker compose logs -f
+docker compose down
+```
+
 ### Get your token
 
 1. Go to [https://commandcode.ai/settings/billing](https://commandcode.ai/settings/billing)

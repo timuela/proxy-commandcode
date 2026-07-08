@@ -1,0 +1,10 @@
+services:
+  proxy-commandcode:
+    build: .
+    container_name: pcc
+    ports:
+      - "3456:3456"
+    environment:
+      - PCMC_PORT=3456
+      - PCMC_VERSION=0.39.1
+    restart: unless-stopped
